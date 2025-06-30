@@ -21,7 +21,7 @@ import { useRealtimeSession } from "./hooks/useRealtimeSession";
 import { createModerationGuardrail } from "@/app/agentConfigs/guardrails";
 
 // Agent configs
-import { allAgentSets, defaultAgentSetKey } from "@/app/agentConfigs";
+import { createAllAgentSets, defaultAgentSetKey } from "@/app/agentConfigs";
 import { customerServiceRetailScenario } from "@/app/agentConfigs/customerServiceRetail";
 import { chatSupervisorScenario } from "@/app/agentConfigs/chatSupervisor";
 import { customerServiceRetailCompanyName } from "@/app/agentConfigs/customerServiceRetail";
@@ -29,10 +29,13 @@ import { chatSupervisorCompanyName } from "@/app/agentConfigs/chatSupervisor";
 import { simpleHandoffScenario } from "@/app/agentConfigs/simpleHandoff";
 
 // Map used by connect logic for scenarios defined via the SDK.
-const sdkScenarioMap: Record<string, RealtimeAgent[]> = {
-  simpleHandoff: simpleHandoffScenario,
-  customerServiceRetail: customerServiceRetailScenario,
-  chatSupervisor: chatSupervisorScenario,
+const getSdkScenarioMap = (voice: string) => {
+  const allAgentSets = createAllAgentSets(voice);
+  return {
+    simpleHandoff: allAgentSets.simpleHandoff,
+    customerServiceRetail: allAgentSets.customerServiceRetail,
+    chatSupervisor: allAgentSets.chatSupervisor,
+  };
 };
 
 import useAudioDownload from "./hooks/useAudioDownload";
@@ -133,8 +136,11 @@ function App() {
 
   useHandleSessionHistory();
 
+  const selectedVoice = searchParams.get("voice") || "sage";
+
   useEffect(() => {
     let finalAgentConfig = searchParams.get("agentConfig");
+    const allAgentSets = createAllAgentSets(selectedVoice);
     if (!finalAgentConfig || !allAgentSets[finalAgentConfig]) {
       finalAgentConfig = defaultAgentSetKey;
       const url = new URL(window.location.toString());
@@ -196,6 +202,7 @@ function App() {
 
   const connectToRealtime = async () => {
     const agentSetKey = searchParams.get("agentConfig") || "default";
+    const sdkScenarioMap = getSdkScenarioMap(selectedVoice);
     if (sdkScenarioMap[agentSetKey]) {
       if (sessionStatus !== "DISCONNECTED") return;
       setSessionStatus("CONNECTING");
@@ -432,7 +439,6 @@ function App() {
 
   const agentSetKey = searchParams.get("agentConfig") || "default";
 
-  const [selectedVoice, setSelectedVoice] = useState<string>('sage');
   const voiceOptions = [
     'alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse'
   ];
@@ -467,7 +473,7 @@ function App() {
               onChange={handleAgentChange}
               className="appearance-none border border-gray-300 rounded-lg text-base px-2 py-1 pr-8 cursor-pointer font-normal focus:outline-none"
             >
-              {Object.keys(allAgentSets).map((agentKey) => (
+              {Object.keys(createAllAgentSets(selectedVoice)).map((agentKey) => (
                 <option key={agentKey} value={agentKey}>
                   {agentKey}
                 </option>
@@ -527,9 +533,9 @@ function App() {
               <select
                 value={selectedVoice}
                 onChange={e => {
-                  setSelectedVoice(e.target.value);
+                  const newSelectedVoice = e.target.value;
                   disconnectFromRealtime();
-                  connectToRealtime();
+                  setSelectedVoice(newSelectedVoice);
                 }}
                 className="appearance-none border border-gray-300 rounded-lg text-base px-2 py-1 pr-8 cursor-pointer font-normal focus:outline-none disabled:bg-gray-200"
               >
