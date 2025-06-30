@@ -27,7 +27,8 @@ export const salesAgent = new RealtimeAgent({
         required: ['category'],
         additionalProperties: false,
       },
-      execute: async () => {
+      execute: async (input: any) => {
+        const { category } = input as { category: string };
         const items = [
           { item_id: 101, type: 'snowboard', name: 'Alpine Blade', retail_price_usd: 450, sale_price_usd: 360, sale_discount_pct: 20 },
           { item_id: 102, type: 'snowboard', name: 'Peak Bomber', retail_price_usd: 499, sale_price_usd: 374, sale_discount_pct: 25 },
