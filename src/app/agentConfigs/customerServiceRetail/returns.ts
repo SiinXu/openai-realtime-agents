@@ -88,7 +88,7 @@ Speak at a medium pace—steady and clear. Brief pauses can be used for emphasis
         required: ['phoneNumber'],
         additionalProperties: false,
       },
-      execute: async (input: any) => {
+      execute: async () => {
         return {
           orders: [
             {
@@ -159,7 +159,7 @@ Speak at a medium pace—steady and clear. Brief pauses can be used for emphasis
         required: ['region', 'itemCategory'],
         additionalProperties: false,
       },
-      execute: async (input: any) => {
+      execute: async () => {
         return {
           policy: `
 At Snowy Peak Boards, we believe in transparent and customer-friendly policies to ensure you have a hassle-free experience. Below are our detailed guidelines:
@@ -225,7 +225,7 @@ We hope these policies give you confidence in our commitment to quality and cust
         required: ['userDesiredAction', 'question'],
         additionalProperties: false,
       },
-      execute: async (input: any, details) => {
+      execute: async (details) => {
         const nMostRecentLogs = 10;
         const history: RealtimeItem[] = (details?.context as any)?.history ?? [];
         const filteredLogs = history.filter((log) => log.type === 'message');
@@ -240,8 +240,8 @@ We hope these policies give you confidence in our commitment to quality and cust
             content: `Carefully consider the context provided, which includes the request and relevant policies and facts, and determine whether the user's desired action can be completed according to the policies. Provide a concise explanation or justification. Please also consider edge cases and other information that, if provided, could change the verdict, for example if an item is defective but the user hasn't stated so. Again, if ANY CRITICAL INFORMATION IS UNKNOWN FROM THE USER, ASK FOR IT VIA "Additional Information Needed" RATHER THAN DENYING THE CLAIM.
 
 <modelContext>
-userDesiredAction: ${input.userDesiredAction}
-question: ${input.question}
+userDesiredAction: ${details.userDesiredAction}
+question: ${details.question}
 </modelContext>
 
 <conversationContext>
