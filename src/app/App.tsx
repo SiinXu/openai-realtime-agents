@@ -526,7 +526,11 @@ function App() {
             <div className="relative inline-block">
               <select
                 value={selectedVoice}
-                onChange={e => setSelectedVoice(e.target.value)}
+                onChange={e => {
+                  setSelectedVoice(e.target.value);
+                  disconnectFromRealtime();
+                  connectToRealtime();
+                }}
                 className="appearance-none border border-gray-300 rounded-lg text-base px-2 py-1 pr-8 cursor-pointer font-normal focus:outline-none disabled:bg-gray-200"
               >
                 {voiceOptions.map((voice) => (
