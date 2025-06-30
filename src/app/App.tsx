@@ -432,6 +432,12 @@ function App() {
 
   const agentSetKey = searchParams.get("agentConfig") || "default";
 
+  const [selectedVoice, setSelectedVoice] = useState<string>('sage');
+  const [voiceLocked, setVoiceLocked] = useState<boolean>(false);
+  const voiceOptions = [
+    'alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse'
+  ];
+
   return (
     <div className="text-base flex flex-col h-screen bg-gray-100 text-gray-800 relative">
       <div className="p-5 text-lg font-semibold flex justify-between items-center">
@@ -512,6 +518,36 @@ function App() {
               </div>
             </div>
           )}
+
+          {/* Voice Selector */}
+          <div className="flex items-center ml-6">
+            <label className="flex items-center text-base gap-1 mr-2 font-medium">
+              Voice
+            </label>
+            <div className="relative inline-block">
+              <select
+                value={selectedVoice}
+                onChange={e => setSelectedVoice(e.target.value)}
+                disabled={voiceLocked}
+                className="appearance-none border border-gray-300 rounded-lg text-base px-2 py-1 pr-8 cursor-pointer font-normal focus:outline-none disabled:bg-gray-200"
+              >
+                {voiceOptions.map((voice) => (
+                  <option key={voice} value={voice}>
+                    {voice}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-600">
+                <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    fillRule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.44l3.71-3.21a.75.75 0 111.04 1.08l-4.25 3.65a.75.75 0 01-1.04 0L5.21 8.27a.75.75 0 01.02-1.06z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
