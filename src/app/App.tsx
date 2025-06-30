@@ -433,7 +433,6 @@ function App() {
   const agentSetKey = searchParams.get("agentConfig") || "default";
 
   const [selectedVoice, setSelectedVoice] = useState<string>('sage');
-  const [voiceLocked, setVoiceLocked] = useState<boolean>(false);
   const voiceOptions = [
     'alloy', 'ash', 'ballad', 'coral', 'echo', 'sage', 'shimmer', 'verse'
   ];
@@ -528,7 +527,6 @@ function App() {
               <select
                 value={selectedVoice}
                 onChange={e => setSelectedVoice(e.target.value)}
-                disabled={voiceLocked}
                 className="appearance-none border border-gray-300 rounded-lg text-base px-2 py-1 pr-8 cursor-pointer font-normal focus:outline-none disabled:bg-gray-200"
               >
                 {voiceOptions.map((voice) => (
