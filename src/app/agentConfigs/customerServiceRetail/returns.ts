@@ -227,7 +227,10 @@ We hope these policies give you confidence in our commitment to quality and cust
       },
       execute: async (details) => {
         const nMostRecentLogs = 10;
-        const history: RealtimeItem[] = (details?.context as any)?.history ?? [];
+        let history: RealtimeItem[] = [];
+        if (details && typeof details === 'object' && 'context' in details && details.context && Array.isArray(details.context.history)) {
+          history = details.context.history as RealtimeItem[];
+        }
         const filteredLogs = history.filter((log) => log.type === 'message');
         const messages = [
           {
