@@ -225,10 +225,10 @@ We hope these policies give you confidence in our commitment to quality and cust
         required: ['userDesiredAction', 'question'],
         additionalProperties: false,
       },
-      execute: async (details) => {
+      execute: async (details: any) => {
         const nMostRecentLogs = 10;
         let history: RealtimeItem[] = [];
-        const context = (details as any)?.context;
+        const context = details?.context;
         if (context && Array.isArray(context.history)) {
           history = context.history as RealtimeItem[];
         }
