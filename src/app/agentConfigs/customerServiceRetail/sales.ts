@@ -14,7 +14,7 @@ export const salesAgent = new RealtimeAgent({
     tool({
       name: 'lookupNewSales',
       description:
-        "Checks for current promotions, discounts, or special deals. Respond with available offers relevant to the user’s query.",
+        "Checks for current promotions, discounts, or special deals. Respond with available offers relevant to the user's query.",
       parameters: {
         type: 'object',
         properties: {
