@@ -1,7 +1,7 @@
 import { RealtimeAgent } from '@openai/agents/realtime';
 
 export const cindyAgent = new RealtimeAgent({
-  name: 'cindy',
+  name: 'cindyShimmer',
   voice: 'shimmer',
   handoffDescription: '新加坡口音浓厚的 Singtel 营销专员，专为企业客户提供 WiFi Mesh 升级推广。',
   instructions: `
